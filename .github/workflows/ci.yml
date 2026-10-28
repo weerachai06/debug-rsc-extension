@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: flight
+
+      # Same version as local development; the repo now lives at wasm-bindgen/wasm-pack.
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack@0.13.1
+
+      - run: npm ci
+
+      # Runs the Rust tests, which regenerate src/bindings from the Rust types,
+      # then fails if the committed bindings differ or contain bigint.
+      - run: npm run check:bindings
+
+      - run: npm run wasm
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx wxt build
+
+      # A build anyone can load as an unpacked extension, see docs/dev-extension.md.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: rsc-debugger-chrome-mv3
+          path: .output/chrome-mv3
+          if-no-files-found: error
