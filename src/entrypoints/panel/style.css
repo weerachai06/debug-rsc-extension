@@ -1,0 +1,68 @@
+:root {
+  color-scheme: light dark;
+  font: 12px/1.5 system-ui, sans-serif;
+}
+body {
+  margin: 0;
+}
+header {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+header input {
+  flex: 1;
+}
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 40px);
+}
+main > section {
+  overflow: auto;
+  padding: 6px;
+}
+main > section + section {
+  border-left: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+ul {
+  margin: 0;
+  padding-left: 14px;
+  list-style: none;
+  font-family: ui-monospace, monospace;
+}
+section > ul,
+section > div > ul {
+  padding-left: 0;
+}
+button {
+  font: inherit;
+}
+li > button:only-child {
+  all: unset;
+  cursor: pointer;
+}
+.toggle {
+  display: inline-block;
+  width: 1.2em;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.label {
+  font-weight: 600;
+}
+.preview {
+  opacity: 0.75;
+}
+.copy {
+  visibility: hidden;
+}
+li:hover > .copy {
+  visibility: visible;
+}
+.diagnostic {
+  margin: 2px 0;
+  color: #c62828;
+}
