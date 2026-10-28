@@ -90,7 +90,14 @@ export const App = ({ create, source }: { create: () => Flight; source: ChunkSou
         <section>
           {selection && (
             <ul class="tree">
-              <Branch key={formatPath(selection.at)} flight={flight} expandable {...selection} />
+              <Branch
+                key={formatPath(selection.at)}
+                flight={flight}
+                expandable
+                defaultOpen
+                onJump={(to, from) => setSelection({ at: to, label: formatPath(to), preview: `← ${formatPath(from)}` })}
+                {...selection}
+              />
             </ul>
           )}
         </section>

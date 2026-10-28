@@ -45,6 +45,15 @@ test('a real Next payload crosses the JSON seam with the shapes the bindings pro
   expect(hit).toMatchObject({ key: 'countDown', preview: '1793465999', at: { id: 7 } });
   expect(hit?.at.path).toEqual(['props', 'children', 1, 'props', 'filterData', 'countDown']);
 
+  // A reference node carries the location it points at, which is what the panel jumps to.
+  const clientElement = { ...page!.at, path: ['props', 'children', 1] };
+  const type = flight.children(clientElement).find((node) => node.key === 'type');
+  // `$L19` is hex: row 0x19, the client component's module row.
+  expect(type).toMatchObject({ kind: 'lazy', target: { id: 0x19, path: [] } });
+  const targetRow = stream?.rows.find((row) => row.id === 0x19);
+  expect(targetRow).toMatchObject({ tag: { kind: 'module' } });
+  expect(type?.target?.row).toBe(targetRow?.at.row);
+
   // Walk from the hit's parent to its sibling through the same locations the panel uses.
   const filterData = { ...hit!.at, path: hit!.at.path.slice(0, -1) };
   expect(flight.children(filterData).map((node) => node.key)).toEqual(['brands', 'countDown']);

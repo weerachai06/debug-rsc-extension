@@ -133,8 +133,11 @@ fn a_forward_reference_is_pending_until_its_row_arrives() {
     let a = child(&kids(&session, &root(&session, 0)), "a").at.clone();
 
     assert_eq!(kids(&session, &a)[0].kind, NodeKind::Pending);
+    assert_eq!(child(&kids(&session, &root(&session, 0)), "a").target, None);
 
     session.feed(chunk(Body::Text { data: "1:[10,20]\n".into() }));
+    let jump = child(&kids(&session, &root(&session, 0)), "a").target.clone();
+    assert_eq!(jump.map(|t| (t.id, t.path)), Some((1, vec![])));
     let resolved = kids(&session, &a);
     assert_eq!(resolved.iter().map(|n| n.preview.as_str()).collect::<Vec<_>>(), ["10", "20"]);
 }
@@ -155,6 +158,8 @@ fn children_follow_references_and_report_the_canonical_location() {
 
     assert_eq!(p.kind, NodeKind::ModelRef);
     assert!(p.expandable);
+    let target = p.target.as_ref().expect("a resolved reference has a target");
+    assert_eq!((target.id, target.path.clone()), (2, vec![Seg::Key("a".into())]));
     let b = &kids(&session, &p.at)[0];
     assert_eq!((key(b), b.kind.clone(), b.preview.as_str()), ("b".into(), NodeKind::Scalar, "42"));
     assert_eq!((b.at.id, b.at.path.clone()), (2, vec![Seg::Key("a".into()), Seg::Key("b".into())]));

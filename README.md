@@ -26,7 +26,7 @@ npm install
 
 Load `.output/chrome-mv3` as an unpacked extension. See [docs/dev-extension.md](docs/dev-extension.md) for the dev loop, builds from CI, and a smoke-test checklist.
 
-CI (`.github/workflows/ci.yml`) runs the Rust and TS tests, the bindings drift check, the typecheck and the build on every pull request and every push to `main`.
+CI (`.github/workflows/ci.yml`) runs the Rust and TS tests, the bindings drift check, the typecheck and the build on every pull request and every push to `main`. Every merge to `main` also publishes a GitHub release with the built extension attached as a zip.
 
 ## Fixtures
 

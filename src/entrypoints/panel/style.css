@@ -56,6 +56,15 @@ li > button:only-child {
 .preview {
   opacity: 0.75;
 }
+.jump {
+  all: unset;
+  cursor: pointer;
+  text-decoration: underline dotted;
+  opacity: 0.75;
+}
+.jump:hover {
+  opacity: 1;
+}
 .copy {
   visibility: hidden;
 }
