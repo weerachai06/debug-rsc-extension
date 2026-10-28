@@ -9,11 +9,16 @@ type Props = {
   label: string;
   preview: string;
   expandable: boolean;
+  /** Where this node points, when it is a reference that resolved. */
+  target?: Loc | null;
+  /** Makes `to` the root of the detail pane. `from` is the reference that was clicked. */
+  onJump: (to: Loc, from: Loc) => void;
+  defaultOpen?: boolean;
 };
 
 /** One value of the resolved tree. Children are asked of the session on every render, so late-arriving rows show up. */
-export const Branch = ({ flight, at, label, preview, expandable }: Props) => {
-  const [open, setOpen] = useState(false);
+export const Branch = ({ flight, at, label, preview, expandable, target, onJump, defaultOpen = false }: Props) => {
+  const [open, setOpen] = useState(defaultOpen);
   const path = formatPath(at);
   return (
     <li>
@@ -24,7 +29,14 @@ export const Branch = ({ flight, at, label, preview, expandable }: Props) => {
       ) : (
         <span class="toggle" />
       )}
-      <span class="label">{label}</span> <span class="preview">{preview}</span>{' '}
+      <span class="label">{label}</span>{' '}
+      {target ? (
+        <button class="preview jump" title={`Go to ${formatPath(target)}`} onClick={() => onJump(target, at)}>
+          {preview} →
+        </button>
+      ) : (
+        <span class="preview">{preview}</span>
+      )}{' '}
       <button class="copy" title={path} onClick={() => navigator.clipboard.writeText(path)}>
         copy path
       </button>
@@ -38,6 +50,8 @@ export const Branch = ({ flight, at, label, preview, expandable }: Props) => {
               label={String(node.key ?? '')}
               preview={`${node.kind} ${node.preview}`}
               expandable={node.expandable}
+              target={node.target}
+              onJump={onJump}
             />
           ))}
         </ul>
