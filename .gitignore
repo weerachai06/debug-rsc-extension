@@ -1,6 +1,5 @@
 node_modules
 .output
-.wxt
 src/wasm
 flight/target
 tmp

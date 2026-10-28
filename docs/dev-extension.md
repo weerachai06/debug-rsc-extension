@@ -27,24 +27,13 @@ The extension has no toolbar icon and no popup. It adds an **RSC** tab to DevToo
 ## 2. Development loop
 
 ```sh
-npm run dev          # builds the WASM, then starts WXT's dev server with hot reload
+npm run dev          # builds the WASM and the extension, then rebuilds the panel and DevTools pages on change
 ```
 
-- Output goes to `.output/chrome-mv3-dev`, not `chrome-mv3`.
-- WXT tries to launch a browser with the extension loaded. If it opens a browser without the extension (recent branded Chrome builds ignore the `--load-extension` flag launchers rely on), either load `.output/chrome-mv3-dev` by hand as above, or point WXT at Chromium or Chrome for Testing with `binaries` in a `web-ext.config.ts`.
-- To stop WXT from launching anything, create `web-ext.config.ts`:
-
-  ```ts
-  import { defineWebExtConfig } from 'wxt';
-
-  export default defineWebExtConfig({ disabled: true });
-  ```
-
-- The dev server listens on `localhost:3000`, which is also Next's default. Run `npx wxt --port 3100` if your app is on 3000.
+- Output goes to `.output/chrome-mv3`, the same folder as a production build. After a rebuild, click the reload icon on the extension in `chrome://extensions`.
+- There is no hot reload. Only the panel and DevTools pages are watched; after editing a content script (`src/content/`), run `npm run build:ext`.
 - **Rust changes are not watched.** After editing `flight/`, run `npm run wasm`.
 - **Changed a type in `flight/src/types.rs`?** Run `npm run bindings`, then commit the regenerated `src/bindings/`. CI fails if they are out of date.
-
-The dev build is not the same extension as the production one. It adds a background service worker, the `tabs` and `scripting` permissions, and the content scripts are no longer listed in the manifest (WXT registers them at runtime instead). **When checking whether capture works, use the production build first** (section 1), and use the dev build only for panel work.
 
 ## 3. Get a build without the toolchain
 

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
-import type { Chunk } from '../../bindings/Chunk';
-import type { Overview } from '../../bindings/Overview';
-import type { ChunkSource } from '../../lib/capture';
-import type { Flight } from '../../lib/flight';
+import { useEffect, useRef, useState } from 'react';
+import type { Chunk } from '../bindings/Chunk';
+import type { Overview } from '../bindings/Overview';
+import type { ChunkSource } from '../lib/capture';
+import type { Flight } from '../lib/flight';
 
 /** Feeds a source into a Flight session and re-reads its overview at most once per animation frame. */
 export const useCapture = (create: () => Flight, source: ChunkSource) => {
