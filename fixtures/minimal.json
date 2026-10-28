@@ -1,0 +1,5 @@
+[
+  { "stream": "doc:1", "body": { "kind": "open", "origin": { "kind": "document", "url": "https://example.com/" } } },
+  { "stream": "doc:1", "body": { "kind": "text", "data": "0:[\"$\",\"div\",null,{}]\n" } },
+  { "stream": "doc:1", "body": { "kind": "end" } }
+]
