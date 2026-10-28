@@ -20,7 +20,7 @@ npm install
 | `npm run wasm` | Build the Rust crate to `src/wasm/` (gitignored) |
 | `npm run bindings` | `cargo test`, which also regenerates `src/bindings/` |
 | `npm run check:bindings` | Regenerate from scratch and fail on any diff or `bigint` |
-| `npm run dev` / `npm run build` | Build the WASM, then run WXT |
+| `npm run dev` / `npm run build` | Build the WASM, then the extension with Vite (`dev` keeps rebuilding the panel) |
 | `npm run typecheck` | `tsc --noEmit` (needs `npm run wasm` first) |
 | `npm test` | vitest (needs `npm run wasm` first) |
 

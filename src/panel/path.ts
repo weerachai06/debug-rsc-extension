@@ -1,4 +1,4 @@
-import type { Loc } from '../../bindings/Loc';
+import type { Loc } from '../bindings/Loc';
 
 const identifier = /^[A-Za-z_$][\w$]*$/;
 

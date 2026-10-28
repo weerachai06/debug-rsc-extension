@@ -1,9 +1,9 @@
-import { useState } from 'preact/hooks';
-import type { Loc } from '../../bindings/Loc';
-import type { RowTag } from '../../bindings/RowTag';
-import type { StreamSummary } from '../../bindings/StreamSummary';
-import type { ChunkSource } from '../../lib/capture';
-import type { Flight } from '../../lib/flight';
+import { useState } from 'react';
+import type { Loc } from '../bindings/Loc';
+import type { RowTag } from '../bindings/RowTag';
+import type { StreamSummary } from '../bindings/StreamSummary';
+import type { ChunkSource } from '../lib/capture';
+import type { Flight } from '../lib/flight';
 import { formatPath } from './path';
 import { Branch } from './Tree';
 import { useCapture } from './useCapture';
@@ -29,7 +29,7 @@ export const App = ({ create, source }: { create: () => Flight; source: ChunkSou
           type="search"
           placeholder="Search keys and values"
           value={query}
-          onInput={(e) => setQuery(e.currentTarget.value)}
+          onChange={(e) => setQuery(e.currentTarget.value)}
         />
         <button
           onClick={() => {
@@ -62,7 +62,7 @@ export const App = ({ create, source }: { create: () => Flight; source: ChunkSou
                   {streamTitle(stream)} · {stream.state} · {stream.bytes} B
                 </h3>
                 {stream.diagnostics.map((d, i) => (
-                  <p class="diagnostic" key={i}>
+                  <p className="diagnostic" key={i}>
                     {d.code}: {d.message}
                   </p>
                 ))}
@@ -89,7 +89,7 @@ export const App = ({ create, source }: { create: () => Flight; source: ChunkSou
         </section>
         <section>
           {selection && (
-            <ul class="tree">
+            <ul className="tree">
               <Branch
                 key={formatPath(selection.at)}
                 flight={flight}

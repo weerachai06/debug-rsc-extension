@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks';
-import type { Loc } from '../../bindings/Loc';
-import type { Flight } from '../../lib/flight';
+import { useState } from 'react';
+import type { Loc } from '../bindings/Loc';
+import type { Flight } from '../lib/flight';
 import { formatPath } from './path';
 
 type Props = {
@@ -23,21 +23,21 @@ export const Branch = ({ flight, at, label, preview, expandable, target, onJump,
   return (
     <li>
       {expandable ? (
-        <button class="toggle" onClick={() => setOpen(!open)}>
+        <button className="toggle" onClick={() => setOpen(!open)}>
           {open ? '▾' : '▸'}
         </button>
       ) : (
-        <span class="toggle" />
+        <span className="toggle" />
       )}
-      <span class="label">{label}</span>{' '}
+      <span className="label">{label}</span>{' '}
       {target ? (
-        <button class="preview jump" title={`Go to ${formatPath(target)}`} onClick={() => onJump(target, at)}>
+        <button className="preview jump" title={`Go to ${formatPath(target)}`} onClick={() => onJump(target, at)}>
           {preview} →
         </button>
       ) : (
-        <span class="preview">{preview}</span>
+        <span className="preview">{preview}</span>
       )}{' '}
-      <button class="copy" title={path} onClick={() => navigator.clipboard.writeText(path)}>
+      <button className="copy" title={path} onClick={() => navigator.clipboard.writeText(path)}>
         copy path
       </button>
       {open && (
