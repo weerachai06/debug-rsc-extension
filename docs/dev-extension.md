@@ -46,9 +46,21 @@ npm run dev          # builds the WASM, then starts WXT's dev server with hot re
 
 The dev build is not the same extension as the production one. It adds a background service worker, the `tabs` and `scripting` permissions, and the content scripts are no longer listed in the manifest (WXT registers them at runtime instead). **When checking whether capture works, use the production build first** (section 1), and use the dev build only for panel work.
 
-## 3. Get a build from CI (no toolchain)
+## 3. Get a build without the toolchain
 
-Every CI run uploads the production build as the `rsc-debugger-chrome-mv3` artifact.
+**Releases.** Every merge to `main` publishes a GitHub release `vX.Y.Z` with `rsc-debugger-X.Y.Z-chrome.zip` attached, built by the CI run that just passed. Download it from the Releases page, unzip it, and **Load unpacked** on the unzipped folder. Or:
+
+```sh
+gh release download --pattern '*-chrome.zip' --dir rsc-debugger   # the latest release
+```
+
+then unzip it and load the folder.
+
+- The version is the next patch after the newest `vX.Y.Z` tag. It is stamped into the built manifest only; `package.json` is not changed.
+- To bump the minor or major version, change `version` in `package.json` in your PR. When it is ahead of the tags it is used as it is, and patches continue from there.
+- The first release is `v0.1.0`.
+
+**CI artifacts.** Every CI run, including pull requests, uploads the production build as the `rsc-debugger-chrome-mv3` artifact.
 
 - GitHub: open the run, download the artifact, unzip it, and **Load unpacked** on the unzipped folder.
 - Or with the CLI:
